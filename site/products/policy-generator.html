@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Policy Generator</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <section class="card">
+    <h1>Policy Generator</h1>
+    <p style="margin-top:.5rem">
+      <a class="btn" href="https://checkout.stripe.com/c/YOUR_POLICY_CHECKOUT_LINK" target="_blank" rel="noopener">Buy License →</a>
+    </p>
+
+    <label for="ptype">Policy Type:</label>
+    <select id="ptype">
+      <option value="privacy">Privacy Policy</option>
+      <option value="terms">Terms of Service</option>
+    </select>
+
+    <button id="previewBtn">Preview</button>
+    <pre id="preview"></pre>
+
+    <input id="license" placeholder="XXXX-XXXX-XXXX">
+    <button id="downloadBtn">Download</button>
+  </section>
+
+  <script src="/assets/gate.js"></script>
+  <script>
+  document.getElementById('previewBtn').addEventListener('click', () => {
+    const type = document.getElementById('ptype').value;
+    document.getElementById('preview').textContent = "Generated " + type + " policy text...";
+  });
+
+  async function validateAndDownload() {
+    const lic = document.getElementById('license').value.trim();
+    if (!lic) { alert('Enter license'); return; }
+    const r = await fetch('https://stealthwork.cole-2d1.workers.dev/validate?license=' + encodeURIComponent(lic));
+    const { ok } = await r.json();
+    if (!ok) { alert('Invalid license'); return; }
+    const type = document.getElementById('ptype').value;
+    const txt = document.getElementById('preview').textContent || '';
+    const a = document.createElement('a');
+    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt);
+    a.download = type + '_policy.txt';
+    a.click();
+  }
+  document.getElementById('downloadBtn').addEventListener('click', validateAndDownload);
+  </script>
+</body>
+</html>
