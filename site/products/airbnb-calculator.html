@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Airbnb Calculator</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <section class="card">
+    <h1>Airbnb Tax & Fee Calculator</h1>
+
+    <p style="margin-top:.5rem">
+      <a class="btn" href="https://checkout.stripe.com/c/YOUR_AIRBNB_CHECKOUT_LINK" target="_blank" rel="noopener">Go Pro (export history) →</a>
+    </p>
+
+    <label for="rent">Nightly Rate ($):</label>
+    <input id="rent" type="number">
+    <label for="nights">Nights:</label>
+    <input id="nights" type="number">
+    <button id="calc">Calculate</button>
+    <pre id="out"></pre>
+
+    <button id="export">Export Calculation (.txt)</button>
+  </section>
+
+  <script src="/assets/gate.js"></script>
+  <script>
+  document.getElementById('calc').addEventListener('click', () => {
+    const rent = parseFloat(document.getElementById('rent').value) || 0;
+    const nights = parseInt(document.getElementById('nights').value) || 0;
+    const gross = rent * nights;
+    const fee = gross * 0.03; // estimate
+    const net = gross - fee;
+    document.getElementById('out').textContent =
+      "Gross: $" + gross.toFixed(2) + "\n" +
+      "Airbnb Fee: $" + fee.toFixed(2) + "\n" +
+      "Net: $" + net.toFixed(2);
+  });
+
+  GATE.init({ validateUrl: 'https://stealthwork.cole-2d1.workers.dev/validate?license=' });
+  GATE.gateExport('#export', () => document.getElementById('out').textContent);
+  </script>
+</body>
+</html>
