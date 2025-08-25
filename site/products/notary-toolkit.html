@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Notary Toolkit</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <section class="card">
+    <h1>Notary Business Toolkit</h1>
+
+    <p style="margin-top:.5rem">
+      <a class="btn" href="https://checkout.stripe.com/c/YOUR_NOTARY_CHECKOUT_LINK" target="_blank" rel="noopener">Buy Toolkit →</a>
+    </p>
+
+    <input id="notaryLic" placeholder="XXXX-XXXX-XXXX">
+    <button id="notaryUnlock" type="button">Access Downloads</button>
+    <div id="notaryBox" class="card"></div>
+  </section>
+
+  <script src="/assets/gate.js"></script>
+  <script>
+  GATE.init({ validateUrl: 'https://stealthwork.cole-2d1.workers.dev/validate?license=' });
+  document.getElementById('notaryUnlock').addEventListener('click', () => {
+    GATE.unlock({
+      input: '#notaryLic',
+      targets: ['#notaryBox'],
+      links: [
+        '/downloads/notary/notary_logbook.xlsx',
+        '/downloads/notary/invoice.xlsx',
+        '/downloads/notary/receipt.xlsx',
+        '/downloads/notary/mileage.xlsx'
+      ]
+    });
+  });
+  </script>
+</body>
+</html>
