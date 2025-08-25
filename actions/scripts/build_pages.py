@@ -3,7 +3,7 @@ import os, csv, pathlib
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 CSV_PATH = REPO_ROOT / "site" / "data" / "faq_topics.csv"
 OUT_DIR  = REPO_ROOT / "site" / "faq"
-ASSET_CSS = "/assets/style.css"
+ASSET_CSS = "../assets/style.css"
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
